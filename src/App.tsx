@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router';
+import LoadingSpinner from './common/components/LoadingSpinner';
 const AppLayout = React.lazy(() => import('./layout/AppLayout'))
 const HomePage = React.lazy(() => import("./pages/HomePage/HomePage"))
 const SearchPage = React.lazy(() => import("./pages/SearchPage/SearchPage"))
@@ -19,7 +20,7 @@ const PlaylistDetailPage = React.lazy(() => import("./pages/PlaylistDetailPage/P
 
 function App() {
   return (
-    <Suspense fallback={<div>loading...</div>}>
+    <Suspense fallback={<LoadingSpinner text="Loading Sportify..." />}>
       <Routes>
         <Route path="/" element={<AppLayout />} >
           <Route index element={<HomePage />} />
