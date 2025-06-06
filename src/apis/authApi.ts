@@ -1,6 +1,6 @@
 import axios from "axios"
-import { clientId, clientSecret } from "../configs/authConfig"
-import { ClientCredentialTokenResponse } from "../models/auth"
+import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } from "../configs/authConfig"
+import { ClientCredentialTokenResponse, ExchangeTokenResponse } from "../models/auth"
 
 const encodedBase64 = (data: string): string => {
     if (typeof window !== "undefined") {
@@ -19,7 +19,7 @@ export const getClientCredientialToken = async (): Promise<ClientCredentialToken
         })
         const response = await axios.post("https://accounts.spotify.com/api/token", body, {
             headers: {
-                Authorization: `Basic ${encodedBase64(clientId + ":" + clientSecret)}`,
+                Authorization: `Basic ${encodedBase64(CLIENT_ID + ":" + CLIENT_SECRET)}`,
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         });
@@ -29,3 +29,38 @@ export const getClientCredientialToken = async (): Promise<ClientCredentialToken
 
     }
 }
+
+export const exchangeToken = async (code: string, codeVerifier: string): Promise<ExchangeTokenResponse> => {
+    try {
+        const url = "https://accounts.spotify.com/api/token";
+        if (!CLIENT_ID || !REDIRECT_URI) {
+            throw new Error("Missing required parameters")
+        }
+
+        console.log('Token exchange parameters:', {
+            client_id: CLIENT_ID,
+            grant_type: 'authorization_code',
+            code: code.substring(0, 20) + '...',
+            redirect_uri: REDIRECT_URI,
+            code_verifier: codeVerifier ? 'present' : 'missing'
+        });
+
+        const body = new URLSearchParams({
+            client_id: CLIENT_ID,
+            grant_type: 'authorization_code',
+            code,
+            redirect_uri: REDIRECT_URI,
+            code_verifier: codeVerifier,
+        });
+
+        const response = await axios.post(url, body, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        })
+        return response.data;
+    } catch (error: any) {
+        console.error('Token exchange error:', error.response?.data || error.message);
+        throw new Error(`Token exchange failed: ${error.response?.data?.error_description || error.message}`);
+    }
+};

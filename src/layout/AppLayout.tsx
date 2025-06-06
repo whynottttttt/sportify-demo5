@@ -7,11 +7,16 @@ import LibraryHead from './components/LibraryHead';
 import Library from './components/Library';
 import Navbar from './components/Navbar';
 
-const Layout = styled("div")({
+const Layout = styled("div")(({ theme }) => ({
     display: "flex",
     height: "100vh",
-    padding: "8px"
-})
+    padding: "8px",
+    maxWidth: "100vw",
+    overflow: "hidden",
+    [theme.breakpoints.down("sm")]: {
+        padding: "4px",
+    },
+}))
 
 const Sidebar = styled("div")(({ theme }) => ({
     width: "331px",
@@ -30,7 +35,12 @@ const ContentBox = styled(Box)(({ theme }) => ({
     width: "100%",
     padding: "8px",
     marginBottom: "8px",
-    marginRight: "8px"
+    marginRight: "8px",
+    overflow: "hidden",
+    [theme.breakpoints.down("sm")]: {
+        padding: "4px",
+        marginRight: "0px",
+    },
 }))
 
 const NavList = styled("ul")({
