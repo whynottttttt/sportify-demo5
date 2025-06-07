@@ -1,5 +1,5 @@
 import { Artist } from "./artist";
-import { ExternalUrls, image, Restriction } from "./commonType";
+import { ExternalUrls, Image, Restriction } from "./commonType";
 
 export interface GetNewReleasesResponse {
     albums: {
@@ -20,7 +20,7 @@ export interface SimplifiedAlbum {
     external_urls: ExternalUrls;
     href: string;
     id: string;
-    images: image[];
+    images: Image[];
     name: string;
     release_date: string;
     release_date_precision: string;
