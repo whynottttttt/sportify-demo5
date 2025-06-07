@@ -36,7 +36,9 @@ const Navbar = () => {
     }
 
     const logout = () => {
+        localStorage.removeItem('access_token')
         handleMenuClose()
+        window.location.reload()
     }
 
     return (
