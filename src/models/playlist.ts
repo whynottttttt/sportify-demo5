@@ -24,6 +24,11 @@ export interface SimplifiedPlaylist {
         total?: number;
     }
     uri?: string;
+}
 
-
+export interface GetPlaylistRequest {
+    playlist_Id: string;
+    market?: string;
+    fields?: string;
+    additional_types?: string;
 }
