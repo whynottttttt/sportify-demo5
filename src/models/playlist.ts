@@ -2,6 +2,7 @@ import { SimplifiedAlbum } from "./album";
 import { ApiResponse } from "./apiResponse"
 import { Artist } from "./artist";
 import { ExternalUrls, Followers, Image, Owner, Restriction } from "./commonType";
+import { Track } from "./track";
 
 export interface GetCurrentUserplaylistRequest {
     limit?: number,
@@ -46,6 +47,7 @@ export interface GetPlaylistRequest {
     additional_types?: string;
 }
 
+
 export interface GetPlaylistItemsRequest extends GetPlaylistRequest {
     offset?: number;
     limit?: number;
@@ -85,36 +87,7 @@ export interface ResumePoint {
 
 
 
-export interface Track {
-    album?: SimplifiedAlbum;
-    artists?: Artist[];
-    available_markets?: string[];
-    disc_number?: number;
-    duration_ms?: number;
-    explicit?: boolean;
-    external_ids?: External;
-    external_urls?: ExternalUrls;
-    href?: string;
-    id?: string;
-    is_playable?: boolean;
-    linked_from?: {
-        external_urls?: ExternalUrls;
-        href?: string;
-        id?: string;
-        type?: string;
-        uri?: string;
-    };
-    restrictions?: {
-        reason?: string;
-    };
-    name?: string;
-    popularity?: number;
-    preview_url?: string | null;
-    track_number?: number;
-    type?: "track";
-    uri?: string;
-    is_local?: boolean;
-}
+
 
 export interface Episode {
     audio_preview_url?: string | null;
@@ -128,7 +101,6 @@ export interface Episode {
     images?: Image[];
     is_externally_hosted?: boolean;
     is_playable?: boolean;
-    language?: string; // Deprecated
     languages?: string[];
     name?: string;
     release_date?: string;
