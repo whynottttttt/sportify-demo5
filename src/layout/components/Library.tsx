@@ -1,5 +1,5 @@
 import { Button, Card, styled, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import useGetCurrentUserPlaylists from "../../hooks/useGetCurrentUserPlaylists";
 import LoadingSpinner from "../../common/components/LoadingSpinner";
 import ErrorMessage from "../../common/components/ErrorMessage";
@@ -22,7 +22,12 @@ const PlaylistContainer = styled("div")(({ theme }) => ({
     },
 }));
 const Library = () => {
-    const { ref, inView } = useInView();
+    const playlistContainerRef = useRef<HTMLDivElement>(null);
+    const { ref, inView } = useInView({
+        root: playlistContainerRef.current,
+        rootMargin: '0px 0px 50px 0px', // 50px 여유를 두고 미리 로드
+        threshold: 0
+    });
     const {
         data,
         isLoading,
@@ -36,7 +41,7 @@ const Library = () => {
         if (inView && hasNextPage && !isFetchingNextPage) {
             fetchNextPage()
         }
-    }, [inView])
+    }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
     if (!user) return <EmptyPlaylist />
 
     if (isLoading) {
@@ -52,7 +57,7 @@ const Library = () => {
             {!data || data?.pages[0].total === 0 ? (
                 <EmptyPlaylist />
             ) : (
-                <PlaylistContainer>
+                <PlaylistContainer ref={playlistContainerRef}>
                     {data?.pages.map((page, index) => (
                         <Playlist playlists={page.items} key={index} />
                     ))}
