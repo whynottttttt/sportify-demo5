@@ -8,6 +8,8 @@ import DesktopPlaylistItem from './components/DesktopPlaylistItem';
 import { PAGE_LIMIT } from '../../configs/commonConfig';
 import { useInView } from 'react-intersection-observer';
 import LoadingSpinner from '../../common/components/LoadingSpinner';
+import LoginButton from '../../common/components/LoginButton';
+import ErrorMessage from '../../common/components/ErrorMessage';
 
 const PlaylistHeader = styled(Grid)(({ theme }) => ({
     display: "flex",
@@ -95,9 +97,10 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 const PlaylistDetailPage = () => {
     const { id } = useParams<{ id: string }>();
     if (id === undefined) return <Navigate to="/" />;
-    const { data: playlist } = useGetPlaylist({ playlist_Id: id })
 
-    const { data: playlistItems, isLoading: IsPlaylistItemsLoading, error: playlistItemsLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetPlaylistItems({ playlist_Id: id, limit: PAGE_LIMIT })
+    const { data: playlist, error: playlistError } = useGetPlaylist({ playlist_Id: id })
+    const { data: playlistItems, isLoading: IsPlaylistItemsLoading, error: playlistItemsError, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetPlaylistItems({ playlist_Id: id, limit: PAGE_LIMIT })
+
     console.log("ddd", playlistItems);
 
     const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -112,6 +115,37 @@ const PlaylistDetailPage = () => {
             fetchNextPage();
         }
     }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+    // 에러 처리 - 로그아웃 시 권한 에러와 일반적인 네트워크/서버 에러 구분
+    if (playlistError || playlistItemsError) {
+        console.log("Playlist Error:", playlistError);
+        console.log("Playlist Items Error:", playlistItemsError);
+
+        // axios 에러 객체에서 status 확인
+        const isUnauthorized =
+            (playlistError && (playlistError as any).response?.status === 401) ||
+            (playlistItemsError && (playlistItemsError as any).response?.status === 401);
+
+        console.log("Is Unauthorized:", isUnauthorized);
+
+        if (isUnauthorized) { //로그인을 안해서 권한 없음 에러라면 로그인 버튼 
+            return (
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    height="100%"
+                    flexDirection="column"
+                >
+                    <Typography variant="h2" fontWeight={700} mb="20px">
+                        다시 로그인 하세요
+                    </Typography>
+                    <LoginButton />
+                </Box>
+            );
+        }
+        return <ErrorMessage errorMessage="Failed to load" />; // 정말 리스트 가져오기 실패라면 fail to load 
+    }
 
     return (
         <>

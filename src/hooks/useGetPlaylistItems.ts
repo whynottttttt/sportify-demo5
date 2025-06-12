@@ -18,6 +18,7 @@ const useGetPlaylistItems = (params: GetPlaylistItemsRequest) => {
             }
             return undefined
         },
+        retry: false, // 재시도 비활성화
     })
 }
 
