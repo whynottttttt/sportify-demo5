@@ -57,30 +57,61 @@ export interface Episode {
     };
     type?: "episode";
     uri?: string;
-    show?: {
-        available_markets?: string[];
-        copyrights?: {
-            text?: string;
-            type?: string;
-        }[];
-        description?: string;
-        html_description?: string;
-        explicit?: boolean;
-        external_urls?: ExternalUrls;
-        href?: string;
-        id?: string;
-        images?: {
-            url?: string;
-            height?: number | null;
-            width?: number | null;
-        }[];
-        is_externally_hosted?: boolean;
-        languages?: string[];
-        media_type?: string;
+    show?: Show;
+}
+
+export interface Show {
+    available_markets?: string[];
+    copyrights?: {
+        text?: string;
+        type?: string;
+    }[];
+    description?: string;
+    html_description?: string;
+    explicit?: boolean;
+    external_urls?: ExternalUrls;
+    href?: string;
+    id?: string;
+    images?: {
+        url?: string;
+        height?: number | null;
+        width?: number | null;
+    }[];
+    is_externally_hosted?: boolean;
+    languages?: string[];
+    media_type?: string;
+    name?: string;
+    publisher?: string;
+    type?: "show";
+    uri?: string;
+    total_episodes?: number;
+}
+
+export interface SimplifiedAudiobook {
+    authors?: {
         name?: string;
-        publisher?: string;
-        type?: "show";
-        uri?: string;
-        total_episodes?: number;
-    };
+    }[];
+    available_markets?: string[];
+    copyrights?: {
+        text?: string;
+        type?: string;
+    }[];
+    description?: string;
+    html_description?: string;
+    edition?: string;
+    explicit?: boolean;
+    external_urls?: ExternalUrls;
+    href?: string;
+    id?: string;
+    images?: Image[];
+    languages?: string[];
+    media_type?: string;
+    name?: string;
+    narrators?: {
+        name?: string;
+    }[];
+    publisher?: string;
+    type?: "audiobook";
+    uri?: string;
+    total_chapters?: number;
 }

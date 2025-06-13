@@ -86,9 +86,6 @@ export interface ResumePoint {
 }
 
 
-
-
-
 export interface Episode {
     audio_preview_url?: string | null;
     description?: string;
@@ -111,6 +108,8 @@ export interface Episode {
     restrictions?: Restriction;
     show?: Show;
 }
+
+export type SimplifiedEpisode = Omit<Episode, "show">;
 
 
 export interface PlaylistTrack {

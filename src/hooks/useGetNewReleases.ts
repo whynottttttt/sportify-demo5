@@ -3,7 +3,8 @@ import { getNewReleases } from "../apis/albumApi";
 import useClientCredentialToken from "./useClientCredentialToken";
 
 const useGetNewReleases = () => {
-    const clientCredentialToken = useClientCredentialToken()
+    const clientCredentialToken = useClientCredentialToken();
+    
     return useQuery({
         queryKey: ["new-releases"],
         queryFn: async () => {

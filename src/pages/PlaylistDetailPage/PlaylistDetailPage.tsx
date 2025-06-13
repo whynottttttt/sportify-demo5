@@ -10,6 +10,7 @@ import { useInView } from 'react-intersection-observer';
 import LoadingSpinner from '../../common/components/LoadingSpinner';
 import LoginButton from '../../common/components/LoginButton';
 import ErrorMessage from '../../common/components/ErrorMessage';
+import EmptyPlaylistWithSearch from './components/EmptyPlaylistWithSearch';
 
 const PlaylistHeader = styled(Grid)(({ theme }) => ({
     display: "flex",
@@ -189,7 +190,9 @@ const PlaylistDetailPage = () => {
                 </Box>
             </PlaylistHeader>
             {
-                playlist?.tracks.total === 0 ? (<Typography>써치</Typography>) : (
+                playlist?.tracks.total === 0 ? (
+                    <EmptyPlaylistWithSearch />
+                ) : (
                     <>
                         <StyledTableContainer ref={tableContainerRef}>
                             <Table>
